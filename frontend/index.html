@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saurabh Sen | Full Stack Developer & AI Student Portfolio</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS v3.4 CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Tailwind Config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            cyber: ['Orbitron', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          },
+          colors: {
+            cyber: {
+              bg: '#0B0F19',
+              darker: '#060810',
+              card: 'rgba(17, 24, 39, 0.65)',
+              blue: '#00E5FF',
+              blueDark: '#00B8D4',
+              purple: '#D946EF',
+              purpleDark: '#AA00FF',
+              lightText: '#E5E7EB',
+              muted: '#7C8BA1',
+              lightBg: '#F8FAFC',
+              lightCard: 'rgba(255, 255, 255, 0.75)',
+              lightBorder: 'rgba(226, 232, 240, 0.8)',
+            }
+          },
+          boxShadow: {
+            'neon-blue': '0 0 15px rgba(0, 229, 255, 0.35)',
+            'neon-blue-strong': '0 0 25px rgba(0, 229, 255, 0.6)',
+            'neon-purple': '0 0 15px rgba(217, 70, 239, 0.35)',
+            'neon-purple-strong': '0 0 25px rgba(217, 70, 239, 0.6)',
+            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+          },
+          backgroundImage: {
+            'gradient-radial': 'radial-gradient(circle, var(--tw-gradient-stops))',
+          }
+        }
+      }
+    }
+  </script>
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cyber-bg text-cyber-lightText font-sans transition-colors duration-300 selection:bg-cyber-blue selection:text-cyber-bg overflow-x-hidden">
+
+  <!-- Interactive Star/Particle Canvas -->
+  <canvas id="cyber-particles" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- Custom Cursor Glow -->
+  <div id="custom-cursor-dot" class="fixed w-2 h-2 bg-cyber-blue rounded-full pointer-events-none z-50 transition-transform duration-75 mix-blend-screen hidden md:block"></div>
+  <div id="custom-cursor-circle" class="fixed w-10 h-10 border border-cyber-purple/60 rounded-full pointer-events-none z-50 transition-all duration-300 mix-blend-screen hidden md:block -translate-x-1/2 -translate-y-1/2"></div>
+
+  <!-- Loading Animation -->
+  <div id="app-loader" class="fixed inset-0 bg-cyber-darker z-50 flex flex-col items-center justify-center transition-all duration-700 ease-in-out">
+    <div class="relative w-32 h-32 flex items-center justify-center mb-8">
+      <!-- High tech futuristic rotating rings -->
+      <div class="absolute inset-0 border-4 border-cyber-blue/10 rounded-full"></div>
+      <div class="absolute inset-0 border-4 border-t-cyber-blue border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+      <div class="absolute inset-2 border-2 border-cyber-purple/10 rounded-full"></div>
+      <div class="absolute inset-2 border-2 border-b-cyber-purple border-t-transparent border-r-transparent border-l-transparent rounded-full animate-[spin_1.5s_linear_infinite_reverse]"></div>
+      <div class="text-cyber-blue font-cyber font-bold text-lg tracking-widest animate-pulse">S</div>
+    </div>
+    <div class="text-center">
+      <h2 id="loader-status" class="text-xs font-mono text-cyber-muted uppercase tracking-[0.3em] mb-2">Initializing Neural Grid...</h2>
+      <div class="w-64 h-1.5 bg-gray-800 rounded-full overflow-hidden relative">
+        <div id="loader-progress-bar" class="absolute h-full w-0 bg-gradient-to-r from-cyber-blue to-cyber-purple transition-all duration-300"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll Progress Indicator -->
+  <div class="fixed top-0 left-0 right-0 h-1 bg-gray-800 z-50 pointer-events-none">
+    <div id="scroll-progress" class="h-full bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-blue w-0"></div>
+  </div>
+
+  <!-- Floating Social Sidebar -->
+  <div class="fixed left-6 bottom-0 z-40 hidden lg:flex flex-col items-center gap-6 after:content-[''] after:w-[1px] after:h-24 after:bg-gradient-to-b after:from-cyber-purple after:to-transparent">
+    <a href="https://github.com/saurabhbuilds59" target="_blank" class="text-cyber-muted hover:text-cyber-blue hover:scale-125 transition-all duration-300 hover:-translate-y-1" id="social-sidebar-github" title="GitHub">
+      <i class="fab fa-github text-xl"></i>
+    </a>
+    <a href="https://www.linkedin.com/in/saurabh-sen-a257266376/" target="_blank" class="text-cyber-muted hover:text-cyber-blue hover:scale-125 transition-all duration-300 hover:-translate-y-1" id="social-sidebar-linkedin" title="LinkedIn">
+      <i class="fab fa-linkedin-in text-xl"></i>
+    </a>
+    <a href="https://instagram.com/_saurabhsen" target="_blank" class="text-cyber-muted hover:text-cyber-purple hover:scale-125 transition-all duration-300 hover:-translate-y-1" id="social-sidebar-instagram" title="Instagram">
+      <i class="fab fa-instagram text-xl"></i>
+    </a>
+    <a href="mailto:saurabhsen937@gmail.com" class="text-cyber-muted hover:text-cyber-blue hover:scale-125 transition-all duration-300 hover:-translate-y-1" id="social-sidebar-email" title="Email">
+      <i class="far fa-envelope text-xl"></i>
+    </a>
+    <span class="text-[10px] font-mono tracking-[0.3em] uppercase text-cyber-muted [writing-mode:vertical-lr] mb-2 select-none">CONNECT WITH ME</span>
+  </div>
+
+  <!-- Floating Chatbot Toggle -->
+  <button id="ai-chat-toggle" class="fixed right-6 bottom-6 z-40 w-14 h-14 rounded-full bg-gradient-to-tr from-cyber-blue to-cyber-purple flex items-center justify-center text-white shadow-neon-blue hover:shadow-neon-purple hover:scale-110 active:scale-95 transition-all duration-300 group" title="Chat with Saurabh's AI Assistant">
+    <i class="fas fa-robot text-2xl group-hover:rotate-12 transition-transform duration-300"></i>
+    <span class="absolute -top-1 -right-1 flex h-3 w-3">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyber-blue opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-3 w-3 bg-cyber-blue"></span>
+    </span>
+  </button>
+
+  <!-- AI Chat Assistant Panel -->
+  <div id="ai-chat-panel" class="fixed right-6 bottom-24 z-40 w-[350px] sm:w-[400px] h-[500px] bg-cyber-darker/95 border border-cyber-blue/30 rounded-2xl shadow-neon-blue flex flex-col overflow-hidden backdrop-blur-xl translate-y-12 opacity-0 pointer-events-none transition-all duration-500">
+    <!-- Chat Header -->
+    <div class="p-4 bg-gradient-to-r from-cyber-blue/20 to-cyber-purple/20 border-b border-cyber-blue/20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyber-blue to-cyber-purple flex items-center justify-center text-white">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div>
+          <h4 class="font-cyber font-bold text-xs tracking-wider text-cyber-blue">Saurabh Bot v1.5</h4>
+          <span class="text-[10px] text-cyber-purple font-mono animate-pulse uppercase">AI Companion Online</span>
+        </div>
+      </div>
+      <button id="ai-chat-close" class="text-cyber-muted hover:text-white transition-colors duration-300 p-1">
+        <i class="fas fa-times text-lg"></i>
+      </button>
+    </div>
+    
+    <!-- Chat Body (Messages) -->
+    <div id="ai-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 font-sans text-sm scrollbar-thin">
+      <!-- Bot Message -->
+      <div class="flex gap-2.5 items-start">
+        <div class="w-7 h-7 rounded-full bg-cyber-blue/10 flex items-center justify-center text-cyber-blue text-xs shrink-0">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="p-3 bg-gray-900 border border-gray-800 rounded-2xl rounded-tl-none max-w-[80%] text-cyber-lightText">
+          Hello! I am Saurabh's AI Twin. Feel free to ask me anything about Saurabh's skills, education, or projects! 🚀
+        </div>
+      </div>
+    </div>
+    
+    <!-- Chat Input -->
+    <form id="ai-chat-form" class="p-3 bg-cyber-darker border-t border-gray-800 flex gap-2">
+      <input type="text" id="ai-chat-input" placeholder="Type a message..." class="flex-1 bg-gray-900 text-sm px-4 py-2.5 rounded-full border border-gray-800 text-white placeholder-cyber-muted focus:outline-none focus:border-cyber-blue focus:shadow-neon-blue transition-all duration-300" required>
+      <button type="submit" class="w-10 h-10 rounded-full bg-cyber-blue hover:bg-cyber-blueDark flex items-center justify-center text-cyber-bg active:scale-95 transition-all duration-300 shrink-0">
+        <i class="fas fa-paper-plane text-sm"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- Interactive Resume Modal -->
+  <div id="resume-modal" class="fixed inset-0 bg-black/80 z-50 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="w-full max-w-4xl bg-cyber-darker border border-cyber-blue/30 rounded-2xl shadow-neon-blue flex flex-col h-[90vh] overflow-hidden translate-y-8 transition-transform duration-300">
+      <!-- Modal Header -->
+      <div class="p-4 bg-gray-900/80 border-b border-gray-800 flex items-center justify-between shrink-0">
+        <h3 class="font-cyber font-bold text-cyber-blue text-sm tracking-wider">SAURABH_SEN_RESUME.pdf</h3>
+        <div class="flex items-center gap-3">
+          <button id="download-pdf-btn" class="px-4 py-1.5 bg-cyber-blue hover:bg-cyber-blueDark text-cyber-bg text-xs font-bold rounded-lg font-cyber tracking-wider flex items-center gap-1.5 transition-all duration-300">
+            <i class="fas fa-download"></i> DOWNLOAD
+          </button>
+          <button id="close-resume-btn" class="text-cyber-muted hover:text-white p-1 transition-colors">
+            <i class="fas fa-times text-xl"></i>
+          </button>
+        </div>
+      </div>
+      <!-- Resume Content Area -->
+      <div class="flex-1 overflow-y-auto p-6 md:p-10 font-sans text-cyber-lightText bg-[#0e1220]">
+        <div id="printable-resume-page" class="bg-cyber-darker border border-gray-800 p-6 md:p-12 shadow-2xl rounded-xl max-w-3xl mx-auto space-y-8 relative overflow-hidden">
+          <!-- Geometric Decors -->
+          <div class="absolute -top-10 -right-10 w-40 h-40 bg-cyber-blue/5 rounded-full blur-2xl"></div>
+          <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-cyber-purple/5 rounded-full blur-2xl"></div>
+          
+          <!-- Header block -->
+          <div class="border-b border-gray-800 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <h1 class="text-3xl font-cyber font-bold text-white tracking-widest uppercase mb-1">Saurabh Sen</h1>
+              <p class="text-cyber-blue font-mono text-sm tracking-wider uppercase">Full Stack Web Developer & AI / DS Scholar</p>
+            </div>
+            <div class="text-xs font-mono space-y-1 text-cyber-muted">
+              <div><i class="fas fa-envelope text-cyber-blue w-5"></i> saurabhsen937@gmail.com</div>
+              <div><i class="fas fa-phone text-cyber-blue w-5"></i> +91 9301477386</div>
+              <div><i class="fas fa-map-marker-alt text-cyber-blue w-5"></i> Jabalpur, MP, India</div>
+              <div><i class="fab fa-github text-cyber-blue w-5"></i> github.com/saurabhbuilds59</div>
+            </div>
+          </div>
+
+          <!-- Professional Summary -->
+          <div class="space-y-3">
+            <h2 class="text-sm font-cyber font-bold text-white tracking-widest uppercase border-l-4 border-cyber-blue pl-3">Professional Statement</h2>
+            <p class="text-xs text-cyber-muted leading-relaxed">
+              Passionate and results-driven Full Stack Web Developer and artificial intelligence scholar currently pursuing a Bachelor of Technology in AI & Data Science (2024–2028). Highly skilled in building robust, interactive full-stack applications with state-of-the-art architectures using React, Next.js, and Node.js. Dedicated to combining standard backend engineering with modern cognitive AI paradigms to build future-ready digital platforms.
+            </p>
+          </div>
+
+          <!-- Education -->
+          <div class="space-y-4">
+            <h2 class="text-sm font-cyber font-bold text-white tracking-widest uppercase border-l-4 border-cyber-purple pl-3">Education Grid</h2>
+            <div class="bg-gray-900/40 border border-gray-800/80 p-4 rounded-xl">
+              <div class="flex justify-between items-start flex-col sm:flex-row gap-1">
+                <h3 class="font-bold text-white text-sm">B.Tech - Artificial Intelligence & Data Science</h3>
+                <span class="text-[10px] font-mono text-cyber-purple bg-cyber-purple/10 border border-cyber-purple/20 px-2.5 py-0.5 rounded-full">2024 - 2028</span>
+              </div>
+              <p class="text-xs text-cyber-blue mt-0.5 font-medium">Shri Ram Institute of Technology</p>
+              <p class="text-xs text-cyber-muted mt-2">Pursuing extensive training in software construction, database systems, data structures, and foundational neural machine learning structures.</p>
+            </div>
+          </div>
+
+          <!-- Skill Matrix -->
+          <div class="space-y-4">
+            <h2 class="text-sm font-cyber font-bold text-white tracking-widest uppercase border-l-4 border-cyber-blue pl-3">Technical Matrix</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <h4 class="text-xs font-mono text-cyber-blue uppercase font-bold">Frontend Engineering</h4>
+                <p class="text-xs text-cyber-muted">React, Next.js, Tailwind CSS, Bootstrap, JavaScript (ES6), HTML5, CSS3, Responsive Design</p>
+              </div>
+              <div class="space-y-2">
+                <h4 class="text-xs font-mono text-cyber-purple uppercase font-bold">Backend & DB</h4>
+                <p class="text-xs text-cyber-muted">Node.js, Express.js, Django, REST APIs, MongoDB, PostgreSQL, MySQL, Firebase Admin</p>
+              </div>
+              <div class="space-y-2">
+                <h4 class="text-xs font-mono text-cyber-blue uppercase font-bold">Languages</h4>
+                <p class="text-xs text-cyber-muted">Python, JavaScript, SQL, C++, HTML, CSS</p>
+              </div>
+              <div class="space-y-2">
+                <h4 class="text-xs font-mono text-cyber-purple uppercase font-bold">Tools & Deployment</h4>
+                <p class="text-xs text-cyber-muted">Git, GitHub, VS Code, Postman, Figma, Vercel, Netlify, Render Cloud Platform</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Academic Projects -->
+          <div class="space-y-4">
+            <h2 class="text-sm font-cyber font-bold text-white tracking-widest uppercase border-l-4 border-cyber-purple pl-3">Featured Deployments</h2>
+            <div class="space-y-3">
+              <div class="p-3 bg-gray-900/20 border border-gray-800 rounded-lg">
+                <div class="flex justify-between items-center">
+                  <h4 class="text-xs font-bold text-white">1. Luxury Restaurant Website (Full Stack)</h4>
+                  <span class="text-[9px] font-mono text-cyber-blue">Node / Express / JSON DB</span>
+                </div>
+                <p class="text-[11px] text-cyber-muted mt-1">Built a high-end luxury fine-dining web application featuring detailed dish menus, dynamic testimonials, and an fully automated reservation booking validation server.</p>
+              </div>
+              <div class="p-3 bg-gray-900/20 border border-gray-800 rounded-lg">
+                <div class="flex justify-between items-center">
+                  <h4 class="text-xs font-bold text-white">2. E-Commerce Platform</h4>
+                  <span class="text-[9px] font-mono text-cyber-purple">React / Tailwind / Context API</span>
+                </div>
+                <p class="text-[11px] text-cyber-muted mt-1">Designed a highly performant and secure online shopping framework with dynamic product listings, live filtering, and shopping cart persistence modules.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Project Live Emulator Frame -->
+  <div id="emulator-modal" class="fixed inset-0 bg-black/90 z-50 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="w-full max-w-5xl bg-cyber-darker border border-cyber-blue/30 rounded-2xl shadow-neon-blue flex flex-col h-[85vh] overflow-hidden translate-y-8 transition-transform duration-300">
+      <!-- Emulator Header -->
+      <div class="p-4 bg-gray-900/90 border-b border-gray-800 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="flex gap-1.5 mr-2">
+            <span class="w-3 h-3 rounded-full bg-red-500 block"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500 block"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500 block"></span>
+          </span>
+          <span id="emulator-title" class="font-cyber font-bold text-cyber-blue text-xs tracking-wider">CYBER_WORKSPACE_SIMULATOR</span>
+          <span class="px-2 py-0.5 bg-cyber-purple/10 border border-cyber-purple/20 rounded text-[9px] font-mono text-cyber-purple">LIVE INTERACTIVE DEMO</span>
+        </div>
+        <button id="close-emulator-btn" class="text-cyber-muted hover:text-white p-1 transition-colors">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      <!-- Emulator Address Bar -->
+      <div class="px-4 py-2 bg-gray-950 border-b border-gray-800 flex items-center gap-2 shrink-0">
+        <i class="fas fa-lock text-emerald-500 text-xs"></i>
+        <div id="emulator-url" class="bg-gray-900 border border-gray-800 text-xs font-mono text-cyber-blue rounded px-3 py-1 flex-1 overflow-x-auto truncate">https://saurabhsen.dev/projects/...</div>
+      </div>
+      <!-- Emulator Viewport -->
+      <div id="emulator-viewport" class="flex-1 bg-cyber-bg overflow-auto p-6 md:p-12 relative flex items-center justify-center">
+        <!-- Live Custom Mini-Game or Prototype Frame inside our portfolio! -->
+        <div id="emulator-content" class="w-full h-full flex flex-col items-center justify-center text-center space-y-6">
+          <!-- Placeholder frame details will be dynamically injected by JS! -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header Section / Sticky Navbar -->
+  <header id="cyber-header" class="fixed top-0 left-0 right-0 z-30 bg-cyber-bg/75 backdrop-blur-md border-b border-cyber-blue/10 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-16 sm:h-20 flex items-center justify-between">
+      <!-- Logo brand -->
+      <a href="#home" id="nav-brand" class="font-cyber font-black tracking-widest text-lg sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-cyber-blue to-cyber-purple hover:scale-105 transition-all duration-300">
+        SAURABH SEN<span class="text-cyber-blue animate-pulse">_</span>
+      </a>
+
+      <!-- Desktop navigation -->
+      <nav class="hidden md:flex items-center gap-8 font-display text-xs tracking-widest uppercase font-medium">
+        <a href="#home" class="nav-link text-cyber-blue hover:text-cyber-blue tracking-[0.2em] transition-colors">Home</a>
+        <a href="#about" class="nav-link text-cyber-muted hover:text-cyber-blue tracking-[0.2em] transition-colors">About</a>
+        <a href="#skills" class="nav-link text-cyber-muted hover:text-cyber-blue tracking-[0.2em] transition-colors">Skills</a>
+        <a href="#experience" class="nav-link text-cyber-muted hover:text-cyber-blue tracking-[0.2em] transition-colors">Experience</a>
+        <a href="#projects" class="nav-link text-cyber-muted hover:text-cyber-blue tracking-[0.2em] transition-colors">Projects</a>
+        <a href="#github" class="nav-link text-cyber-muted hover:text-cyber-blue tracking-[0.2em] transition-colors">GitHub</a>
+        <a href="#contact" class="nav-link text-cyber-muted hover:text-cyber-blue tracking-[0.2em] transition-colors">Contact</a>
+      </nav>
+
+      <!-- Right Controls: Theme Toggle & CTA button -->
+      <div class="flex items-center gap-4">
+        <!-- Theme Switcher -->
+        <button id="theme-toggle" class="w-10 h-10 rounded-full border border-cyber-blue/20 flex items-center justify-center text-cyber-blue hover:shadow-neon-blue active:scale-95 transition-all duration-300" title="Toggle Light/Dark Theme">
+          <i class="fas fa-moon" id="theme-icon-dark"></i>
+          <i class="fas fa-sun hidden" id="theme-icon-light"></i>
+        </button>
+
+        <a href="#contact" class="hidden lg:inline-block px-5 py-2.5 bg-transparent border border-cyber-purple text-cyber-purple hover:bg-cyber-purple hover:text-white font-cyber text-[10px] tracking-widest uppercase font-bold hover:shadow-neon-purple active:scale-95 transition-all duration-300" id="header-hire-btn">
+          HIRE_ME
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 rounded-full border border-cyber-blue/20 flex items-center justify-center text-cyber-blue active:scale-95 transition-all duration-300">
+          <i class="fas fa-bars" id="hamburger-icon"></i>
+          <i class="fas fa-times hidden" id="close-hamburger-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer menu -->
+    <div id="mobile-drawer" class="fixed top-[64px] sm:top-[80px] left-0 right-0 bg-cyber-darker/95 border-b border-cyber-blue/10 backdrop-blur-xl h-0 opacity-0 overflow-hidden transition-all duration-500 z-20 flex flex-col items-center justify-center gap-6 py-0 md:hidden font-display text-sm tracking-[0.3em] uppercase">
+      <a href="#home" class="mobile-nav-link text-cyber-blue hover:text-cyber-blue font-bold transition-all">Home</a>
+      <a href="#about" class="mobile-nav-link text-cyber-muted hover:text-cyber-blue transition-all">About</a>
+      <a href="#skills" class="mobile-nav-link text-cyber-muted hover:text-cyber-blue transition-all">Skills</a>
+      <a href="#experience" class="mobile-nav-link text-cyber-muted hover:text-cyber-blue transition-all">Experience</a>
+      <a href="#projects" class="mobile-nav-link text-cyber-muted hover:text-cyber-blue transition-all">Projects</a>
+      <a href="#github" class="mobile-nav-link text-cyber-muted hover:text-cyber-blue transition-all">GitHub</a>
+      <a href="#contact" class="mobile-nav-link text-cyber-muted hover:text-cyber-blue transition-all">Contact</a>
+      <a href="#contact" class="px-6 py-2 bg-gradient-to-tr from-cyber-blue to-cyber-purple text-cyber-bg font-cyber text-[10px] tracking-widest uppercase font-bold shadow-neon-blue rounded-full mt-4" id="mobile-menu-cta">HIRE ME</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="relative min-h-screen flex items-center justify-center pt-24 pb-12 overflow-hidden z-10 px-6 max-w-7xl mx-auto">
+    <!-- Hero Grid Overlay -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#00e5ff06_1px,transparent_1px),linear-gradient(to_bottom,#00e5ff06_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none z-0"></div>
+
+    <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+      <!-- Left Content Column -->
+      <div class="lg:col-span-7 flex flex-col justify-center text-center lg:text-left space-y-6">
+        <div class="inline-flex items-center gap-2.5 px-4 py-1.5 bg-cyber-blue/10 border border-cyber-blue/20 rounded-full self-center lg:self-start mb-2 hover:shadow-neon-blue transition-all duration-300">
+          <span class="w-2 h-2 rounded-full bg-cyber-blue animate-pulse"></span>
+          <span class="text-[10px] font-mono text-cyber-blue uppercase tracking-[0.2em] font-semibold">Ready for full-stack deployments</span>
+        </div>
+
+        <h3 class="text-xs sm:text-sm font-mono text-cyber-purple tracking-[0.4em] uppercase font-bold animate-pulse">Established 2024 — Scholar Portfolio</h3>
+        
+        <h1 class="text-4xl sm:text-6xl xl:text-7xl font-cyber font-black tracking-wider leading-[1.1] text-white">
+          SAURABH <br class="hidden sm:block" />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyber-blue via-cyber-purple to-cyber-blue bg-[size:200%_auto] animate-[gradient_4s_linear_infinite] filter drop-shadow-[0_0_15px_rgba(0,229,255,0.2)]">SEN</span>
+        </h1>
+
+        <div class="h-8 flex items-center justify-center lg:justify-start">
+          <p class="font-display font-medium text-lg sm:text-xl text-cyber-muted">
+            <span class="text-white border-r-2 border-cyber-blue pr-1.5 py-0.5 animate-pulse uppercase tracking-wider" id="typing-text">Full Stack Web Developer</span>
+          </p>
+        </div>
+
+        <p class="max-w-xl text-sm sm:text-base text-cyber-muted leading-relaxed font-light mx-auto lg:mx-0">
+          Enthusiastic and professional full-stack solutions builder specialized in modular engineering, modern React architectures, robust Node/Django servers, and interactive cognitive AI layouts.
+        </p>
+
+        <!-- CTA buttons -->
+        <div class="pt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+          <button id="open-resume-modal-btn" class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-tr from-cyber-blue to-cyber-blue/80 text-cyber-bg font-cyber text-xs uppercase tracking-[0.2em] font-bold hover:shadow-neon-blue hover:scale-[1.03] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2">
+            <i class="fas fa-file-contract"></i> View Resume
+          </button>
+          <a href="#contact" class="w-full sm:w-auto px-8 py-3.5 bg-transparent border border-cyber-purple text-cyber-purple font-cyber text-xs uppercase tracking-[0.2em] font-bold hover:bg-cyber-purple hover:text-white hover:shadow-neon-purple hover:scale-[1.03] active:scale-95 transition-all duration-300 text-center flex items-center justify-center gap-2">
+            <i class="far fa-paper-plane"></i> Contact Me
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive 3D Developer Vector Illustration -->
+      <div class="lg:col-span-5 flex justify-center items-center relative select-none">
+        <!-- Floating Backdrop Light -->
+        <div class="absolute w-72 h-72 bg-gradient-to-tr from-cyber-blue/10 to-cyber-purple/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
+        
+        <!-- Interactive 3D Workstation Vector Canvas/Box -->
+        <div id="interactive-3d-box" class="w-full max-w-[420px] aspect-square rounded-2xl border border-cyber-blue/20 bg-cyber-darker/60 backdrop-blur-md shadow-glass relative p-8 flex flex-col justify-between overflow-hidden cursor-crosshair group hover:border-cyber-blue/40 transition-all duration-500">
+          <!-- Glass corner markers -->
+          <div class="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-cyber-blue opacity-50"></div>
+          <div class="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-cyber-blue opacity-50"></div>
+          <div class="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-cyber-blue opacity-50"></div>
+          <div class="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-cyber-blue opacity-50"></div>
+          
+          <!-- Cyber Grid Info Overlay -->
+          <div class="flex justify-between items-center text-[10px] font-mono text-cyber-blue/60 tracking-wider">
+            <span>GRID_NODE_A12</span>
+            <span class="animate-pulse">● STABLE</span>
+          </div>
+
+          <!-- Futuristic Animated Developer Workstation SVG -->
+          <div id="isometric-dev-svg-container" class="w-full flex-1 flex items-center justify-center relative py-4 transform duration-300">
+            <svg viewBox="0 0 400 400" class="w-full max-h-[280px]" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <!-- Gradients for standard modern visual styling -->
+                <linearGradient id="neonGlowBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#00E5FF" stop-opacity="1"/>
+                  <stop offset="100%" stop-color="#3B82F6" stop-opacity="1"/>
+                </linearGradient>
+                <linearGradient id="neonGlowPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#D946EF" stop-opacity="1"/>
+                  <stop offset="100%" stop-color="#8B5CF6" stop-opacity="1"/>
+                </linearGradient>
+                <linearGradient id="darkConsole" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#1F2937" stop-opacity="1"/>
+                  <stop offset="100%" stop-color="#111827" stop-opacity="1"/>
+                </linearGradient>
+              </defs>
+              <!-- 3D Grid Base Shadow -->
+              <ellipse cx="200" cy="320" rx="120" ry="15" fill="#000000" opacity="0.6"/>
+              
+              <!-- 3D Platform/Desk -->
+              <polygon points="100,280 300,280 330,300 70,300" fill="url(#darkConsole)" stroke="url(#neonGlowBlue)" stroke-width="2"/>
+              
+              <!-- Monitors -->
+              <!-- Main Center Monitor -->
+              <rect x="150" y="160" width="100" height="70" rx="6" fill="#111827" stroke="url(#neonGlowBlue)" stroke-width="2"/>
+              <polygon points="180,230 220,230 230,270 170,270" fill="#1f2937" stroke="url(#neonGlowBlue)" stroke-width="1.5"/>
+              <!-- Screen lines -->
+              <line x1="160" y1="175" x2="240" y2="175" stroke="#00e5ff" stroke-width="1.5" opacity="0.8" stroke-dasharray="3,3"/>
+              <line x1="160" y1="190" x2="210" y2="190" stroke="#d946ef" stroke-width="1.5" opacity="0.8"/>
+              <line x1="160" y1="205" x2="230" y2="205" stroke="#00e5ff" stroke-width="1.5" opacity="0.6"/>
+              
+              <!-- Left Side Code Monitor -->
+              <rect x="65" y="180" width="70" height="90" rx="4" fill="#0c0e17" stroke="url(#neonGlowPurple)" stroke-width="1.5" transform="rotate(10 100 225)"/>
+              <line x1="75" y1="195" x2="125" y2="195" stroke="#d946ef" stroke-width="1.2" opacity="0.7" transform="rotate(10 100 225)"/>
+              <line x1="75" y1="210" x2="115" y2="210" stroke="#00e5ff" stroke-width="1.2" opacity="0.8" transform="rotate(10 100 225)"/>
+              <line x1="75" y1="225" x2="120" y2="225" stroke="#d946ef" stroke-width="1.2" opacity="0.6" transform="rotate(10 100 225)"/>
+
+              <!-- Developer Character Representation -->
+              <circle cx="200" cy="115" r="22" fill="#1f2937" stroke="url(#neonGlowBlue)" stroke-width="2" class="animate-bounce" style="animation-duration: 4s;"/>
+              <polygon points="160,180 240,180 250,145 150,145" fill="#111827" stroke="url(#neonGlowPurple)" stroke-width="2"/>
+              <!-- Neon headset -->
+              <path d="M178 115 A 22 22 0 0 1 222 115" fill="none" stroke="#00e5ff" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="178" cy="115" r="4" fill="#00e5ff"/>
+              <circle cx="222" cy="115" r="4" fill="#00e5ff"/>
+
+              <!-- Interactive Floating Technology Icons/Nodes connected with vectors -->
+              <g id="floating-tech-nodes">
+                <!-- React Node -->
+                <circle cx="310" cy="110" r="18" fill="#111827" stroke="#00E5FF" stroke-width="1.5" class="animate-[pulse_3s_infinite]"/>
+                <i class="fab fa-react text-sky-400 absolute text-xs" style="left: 300px; top: 100px;"></i>
+                <text x="310" y="114" fill="#00e5ff" font-family="Space Grotesk" font-size="10" font-weight="bold" text-anchor="middle">JS</text>
+                
+                <!-- Python Node -->
+                <circle cx="90" cy="90" r="18" fill="#111827" stroke="#D946EF" stroke-width="1.5" class="animate-[pulse_4s_infinite]"/>
+                <text x="90" y="94" fill="#d946ef" font-family="Space Grotesk" font-size="10" font-weight="bold" text-anchor="middle">PY</text>
+
+                <!-- Data science sphere -->
+                <circle cx="200" cy="45" r="14" fill="#111827" stroke="#00E5FF" stroke-width="1.5" class="animate-pulse"/>
+                <text x="200" y="49" fill="#00e5ff" font-family="Space Grotesk" font-size="8" font-weight="bold" text-anchor="middle">AI</text>
+              </g>
+
+              <!-- Connection lines showing network/cognitive architecture -->
+              <line x1="200" y1="59" x2="200" y2="93" stroke="url(#neonGlowBlue)" stroke-width="1" opacity="0.4" stroke-dasharray="2,2"/>
+              <line x1="90" y1="108" x2="160" y2="155" stroke="url(#neonGlowPurple)" stroke-width="1" opacity="0.3"/>
+              <line x1="310" y1="128" x2="240" y2="155" stroke="url(#neonGlowBlue)" stroke-width="1" opacity="0.3"/>
+            </svg>
+          </div>
+
+          <!-- Bottom Coordinates Tracker -->
+          <div class="flex justify-between items-center text-[9px] font-mono text-cyber-muted">
+            <span id="tracker-coords">RX_ROT: 0° / RY_ROT: 0°</span>
+            <span>SYSTEM_SECURE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-24 relative px-6 z-10 max-w-7xl mx-auto">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_left_bottom,rgba(0,229,255,0.03),transparent_40%)] pointer-events-none -z-10"></div>
+    
+    <div class="space-y-4 text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-block text-xs font-mono text-cyber-blue uppercase tracking-[0.3em] font-semibold">ABOUT_ME_INTELLIGENCE</div>
+      <h2 class="text-3xl sm:text-4xl font-cyber font-black tracking-widest text-white uppercase">The Human Element</h2>
+      <div class="w-24 h-1 bg-gradient-to-r from-cyber-blue to-cyber-purple mx-auto"></div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <!-- Left Narrative Text Column -->
+      <div class="lg:col-span-7 space-y-6">
+        <p class="text-sm sm:text-base text-cyber-lightText leading-relaxed font-light">
+          I am a specialized full-stack software constructor and student who loves translating complex concepts into clean, high-performance web solutions. I currently study <span class="text-cyber-blue font-semibold">B.Tech in Artificial Intelligence & Data Science</span> (Batch of 2024–2028) at the <span class="text-cyber-purple font-semibold">Shri Ram Institute of Technology</span>.
+        </p>
+        <p class="text-sm sm:text-base text-cyber-muted leading-relaxed font-light">
+          From crafting custom database systems to building high-fidelity interactive user interfaces, my objective is always to deploy robust, secure, and production-ready systems. I treat programming as an exact craft, building each component with elegant logic and strict typography pairing.
+        </p>
+
+        <!-- Brief Profile Fields Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+          <div class="p-4 bg-cyber-darker/60 border border-gray-800 rounded-xl flex items-center gap-4 hover:border-cyber-blue/30 transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-cyber-blue/10 flex items-center justify-center text-cyber-blue text-lg">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div>
+              <div class="text-[10px] font-mono text-cyber-muted uppercase tracking-wider">EDUCATION</div>
+              <div class="text-xs font-bold text-white uppercase">B.Tech AI & Data Science</div>
+            </div>
+          </div>
+          <div class="p-4 bg-cyber-darker/60 border border-gray-800 rounded-xl flex items-center gap-4 hover:border-cyber-purple/30 transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-cyber-purple/10 flex items-center justify-center text-cyber-purple text-lg">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <div>
+              <div class="text-[10px] font-mono text-cyber-muted uppercase tracking-wider">LOCATION</div>
+              <div class="text-xs font-bold text-white uppercase">Jabalpur, MP, India</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Glass Card: Identity Matrix -->
+      <div class="lg:col-span-5 flex justify-center">
+        <div class="w-full max-w-sm bg-cyber-card border border-cyber-blue/20 p-8 rounded-2xl shadow-glass space-y-6 relative overflow-hidden group hover:border-cyber-blue/40 transition-all duration-300">
+          <div class="absolute -top-10 -right-10 w-32 h-32 bg-cyber-blue/10 rounded-full blur-2xl"></div>
+          
+          <h3 class="font-cyber font-black tracking-widest text-sm text-cyber-blue uppercase">IDENTITY_METRIC</h3>
+          <div class="h-px bg-gray-800 w-full"></div>
+          
+          <div class="space-y-4 font-mono text-xs">
+            <div class="flex justify-between border-b border-gray-800 pb-2">
+              <span class="text-cyber-muted">ALIAS:</span>
+              <span class="text-cyber-blue font-bold tracking-wider uppercase">Saurabh Sen</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-800 pb-2">
+              <span class="text-cyber-muted">STATUS:</span>
+              <span class="text-emerald-400 font-bold tracking-wider uppercase animate-pulse">● ACTIVE_DEV</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-800 pb-2">
+              <span class="text-cyber-muted">PRIMARY_LANGS:</span>
+              <span class="text-white">Python, JS, C++, SQL</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-800 pb-2">
+              <span class="text-cyber-muted">SPECIALTIES:</span>
+              <span class="text-cyber-purple">Full Stack / Neural UI</span>
+            </div>
+            <div class="flex justify-between border-b border-gray-800 pb-2">
+              <span class="text-cyber-muted">TIMEZONE:</span>
+              <span class="text-white">IST (UTC +5:30)</span>
+            </div>
+          </div>
+          
+          <div class="p-3.5 bg-cyber-blue/10 border border-cyber-blue/20 text-[11px] text-cyber-blue text-center font-mono tracking-wider uppercase rounded-lg">
+            LOGICAL_MATRIX_STABLE
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="py-24 relative px-6 z-10 max-w-7xl mx-auto">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_right_bottom,rgba(217,70,239,0.03),transparent_40%)] pointer-events-none -z-10"></div>
+    
+    <div class="space-y-4 text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-block text-xs font-mono text-cyber-purple uppercase tracking-[0.3em] font-semibold">SKILL_ENGINEERING_METADATA</div>
+      <h2 class="text-3xl sm:text-4xl font-cyber font-black tracking-widest text-white uppercase">Technical Capabilities</h2>
+      <div class="w-24 h-1 bg-gradient-to-r from-cyber-purple to-cyber-blue mx-auto"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Frontend Skill Block -->
+      <div class="bg-cyber-card border border-cyber-blue/15 p-6 rounded-2xl hover:border-cyber-blue/40 shadow-glass group transition-all duration-300 flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-cyber-blue/10 flex items-center justify-center text-cyber-blue text-xl mb-6 shadow-neon-blue group-hover:scale-110 transition-transform">
+            <i class="fas fa-laptop-code"></i>
+          </div>
+          <h3 class="font-cyber font-bold tracking-widest text-xs text-white uppercase mb-6">FRONTEND</h3>
+          
+          <div class="space-y-4 mb-6">
+            <!-- Skill Items -->
+            <div class="skill-item" data-target-progress="95">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">HTML/CSS</span>
+                <span class="text-cyber-blue">95%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-blue w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+            
+            <div class="skill-item" data-target-progress="85">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">React / Next.js</span>
+                <span class="text-cyber-blue">85%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-blue w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+            
+            <div class="skill-item" data-target-progress="90">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">Tailwind CSS</span>
+                <span class="text-cyber-blue">90%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-blue w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-4 border-t border-gray-800">
+          <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-muted">ES6</span>
+          <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-muted">Bootstrap</span>
+        </div>
+      </div>
+
+      <!-- Backend Skill Block -->
+      <div class="bg-cyber-card border border-cyber-purple/15 p-6 rounded-2xl hover:border-cyber-purple/40 shadow-glass group transition-all duration-300 flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-cyber-purple/10 flex items-center justify-center text-cyber-purple text-xl mb-6 shadow-neon-purple group-hover:scale-110 transition-transform">
+            <i class="fas fa-server"></i>
+          </div>
+          <h3 class="font-cyber font-bold tracking-widest text-xs text-white uppercase mb-6">BACKEND</h3>
+          
+          <div class="space-y-4 mb-6">
+            <div class="skill-item" data-target-progress="85">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">Node.js / Express</span>
+                <span class="text-cyber-purple">85%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-purple w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+            
+            <div class="skill-item" data-target-progress="70">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">Django (Python)</span>
+                <span class="text-cyber-purple">70%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-purple w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+
+            <div class="skill-item" data-target-progress="80">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">REST API Arch</span>
+                <span class="text-cyber-purple">80%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-purple w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-4 border-t border-gray-800">
+          <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-muted">MVC</span>
+          <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-muted">Pipenv</span>
+        </div>
+      </div>
+
+      <!-- Database Skill Block -->
+      <div class="bg-cyber-card border border-cyber-blue/15 p-6 rounded-2xl hover:border-cyber-blue/40 shadow-glass group transition-all duration-300 flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-cyber-blue/10 flex items-center justify-center text-cyber-blue text-xl mb-6 shadow-neon-blue group-hover:scale-110 transition-transform">
+            <i class="fas fa-database"></i>
+          </div>
+          <h3 class="font-cyber font-bold tracking-widest text-xs text-white uppercase mb-6">DATABASE</h3>
+          
+          <div class="space-y-4 mb-6">
+            <div class="skill-item" data-target-progress="80">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">MongoDB / NoSQL</span>
+                <span class="text-cyber-blue">80%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-blue w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+            
+            <div class="skill-item" data-target-progress="75">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">MySQL / Postgres</span>
+                <span class="text-cyber-blue">75%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-blue w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+
+            <div class="skill-item" data-target-progress="85">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">Firebase DB</span>
+                <span class="text-cyber-blue">85%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-blue w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-4 border-t border-gray-800">
+          <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-muted">Auth</span>
+          <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-muted">SQL queries</span>
+        </div>
+      </div>
+
+      <!-- Tools Skill Block -->
+      <div class="bg-cyber-card border border-cyber-purple/15 p-6 rounded-2xl hover:border-cyber-purple/40 shadow-glass group transition-all duration-300 flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-cyber-purple/10 flex items-center justify-center text-cyber-purple text-xl mb-6 shadow-neon-purple group-hover:scale-110 transition-transform">
+            <i class="fas fa-tools"></i>
+          </div>
+          <h3 class="font-cyber font-bold tracking-widest text-xs text-white uppercase mb-6">TOOLS / DEV</h3>
+          
+          <div class="space-y-4 mb-6">
+            <div class="skill-item" data-target-progress="90">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">Git / GitHub</span>
+                <span class="text-cyber-purple">90%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-purple w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+            
+            <div class="skill-item" data-target-progress="85">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">VS Code / Postman</span>
+                <span class="text-cyber-purple">85%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-purple w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+
+            <div class="skill-item" data-target-progress="80">
+              <div class="flex justify-between text-xs font-mono mb-1">
+                <span class="text-cyber-muted">Vercel / Netlify</span>
+                <span class="text-cyber-purple">80%</span>
+              </div>
+              <div class="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div class="h-full bg-cyber-purple w-0 transition-all duration-1000 skill-progress-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-4 border-t border-gray-800">
+          <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-muted">Figma</span>
+          <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-muted">Render</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience & Education Timeline -->
+  <section id="experience" class="py-24 relative px-6 z-10 max-w-7xl mx-auto">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_left_bottom,rgba(0,229,255,0.03),transparent_40%)] pointer-events-none -z-10"></div>
+    
+    <div class="space-y-4 text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-block text-xs font-mono text-cyber-blue uppercase tracking-[0.3em] font-semibold">ACADEMIC_TIMELINE_STRUCTURE</div>
+      <h2 class="text-3xl sm:text-4xl font-cyber font-black tracking-widest text-white uppercase">Learning Timeline</h2>
+      <div class="w-24 h-1 bg-gradient-to-r from-cyber-blue to-cyber-purple mx-auto"></div>
+    </div>
+
+    <div class="max-w-3xl mx-auto relative before:content-[''] before:absolute before:left-4 md:before:left-1/2 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-cyber-blue before:via-cyber-purple before:to-cyber-blue">
+      
+      <!-- Entry 1 -->
+      <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-12 group">
+        <!-- Dot indicator -->
+        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-cyber-bg border-2 border-cyber-blue rounded-full -translate-x-1/2 top-1.5 z-10 group-hover:bg-cyber-blue group-hover:scale-125 group-hover:shadow-neon-blue transition-all duration-300"></div>
+        
+        <!-- Left Side (Timeline Details) -->
+        <div class="md:text-right md:pr-4 flex flex-col md:items-end justify-center">
+          <span class="text-xs font-mono text-cyber-blue font-bold">2024 - 2028</span>
+          <h4 class="font-cyber font-bold text-white text-sm uppercase tracking-wider mt-1">B.Tech AI & Data Science</h4>
+        </div>
+        
+        <!-- Right Side (Glass Card Narrative) -->
+        <div class="mt-2 md:mt-0 bg-cyber-card border border-gray-800 p-5 rounded-xl hover:border-cyber-blue/30 transition-colors duration-300">
+          <h5 class="text-xs font-bold text-cyber-blue uppercase tracking-wider mb-2">Shri Ram Institute of Technology</h5>
+          <p class="text-xs text-cyber-muted leading-relaxed">
+            Pursuing formal instruction in algorithmic design, object-oriented concepts, structure configurations, database management, and foundational machine intelligence methodologies.
+          </p>
+        </div>
+      </div>
+
+      <!-- Entry 2 -->
+      <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 mb-12 group">
+        <!-- Dot indicator -->
+        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-cyber-bg border-2 border-cyber-purple rounded-full -translate-x-1/2 top-1.5 z-10 group-hover:bg-cyber-purple group-hover:scale-125 group-hover:shadow-neon-purple transition-all duration-300"></div>
+        
+        <!-- Left Side for desktop (Narrative card) -->
+        <div class="mt-2 md:mt-0 md:col-start-1 md:col-end-2 md:text-right bg-cyber-card border border-gray-800 p-5 rounded-xl hover:border-cyber-purple/30 transition-colors duration-300 md:row-start-1 md:row-end-2">
+          <h5 class="text-xs font-bold text-cyber-purple uppercase tracking-wider mb-2">Self-Directed Dev Bootcamp</h5>
+          <p class="text-xs text-cyber-muted leading-relaxed">
+            Acquired high proficiency in modular React structures, advanced State management, secure middleware design, Express API endpoints, and full-stack integration strategies.
+          </p>
+        </div>
+
+        <!-- Right Side for desktop (Timeline details) -->
+        <div class="md:pl-4 flex flex-col items-start justify-center md:row-start-1 md:row-end-2 md:col-start-2 md:col-end-3">
+          <span class="text-xs font-mono text-cyber-purple font-bold">2023 - Present</span>
+          <h4 class="font-cyber font-bold text-white text-sm uppercase tracking-wider mt-1">Full Stack Specialization</h4>
+        </div>
+      </div>
+
+      <!-- Entry 3 -->
+      <div class="relative pl-12 md:pl-0 md:grid md:grid-cols-2 md:gap-16 group">
+        <!-- Dot indicator -->
+        <div class="absolute left-4 md:left-1/2 w-4 h-4 bg-cyber-bg border-2 border-cyber-blue rounded-full -translate-x-1/2 top-1.5 z-10 group-hover:bg-cyber-blue group-hover:scale-125 group-hover:shadow-neon-blue transition-all duration-300"></div>
+        
+        <!-- Left Side -->
+        <div class="md:text-right md:pr-4 flex flex-col md:items-end justify-center">
+          <span class="text-xs font-mono text-cyber-blue font-bold">2024</span>
+          <h4 class="font-cyber font-bold text-white text-sm uppercase tracking-wider mt-1">Foundational Node Engineering</h4>
+        </div>
+        
+        <!-- Right Side -->
+        <div class="mt-2 md:mt-0 bg-cyber-card border border-gray-800 p-5 rounded-xl hover:border-cyber-blue/30 transition-colors duration-300">
+          <h5 class="text-xs font-bold text-cyber-blue uppercase tracking-wider mb-2">Database & Microservice Integration</h5>
+          <p class="text-xs text-cyber-muted leading-relaxed">
+            Focused on robust NoSQL data stores, atomic JSON logging structures, structured validation filters, and asynchronous Express handler implementations.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Achievements Counter Panels -->
+  <section id="achievements-section" class="py-12 bg-cyber-darker/60 border-y border-gray-900/85 relative z-10 px-6">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+      
+      <!-- Counter Card 1 -->
+      <div class="space-y-2 achievement-counter-card" data-final-count="25">
+        <div class="text-2xl sm:text-4xl font-cyber font-black text-cyber-blue tracking-wide filter drop-shadow-[0_0_8px_rgba(0,229,255,0.15)]">
+          <span class="count-value">0</span>+
+        </div>
+        <div class="text-[10px] font-mono uppercase tracking-[0.2em] text-cyber-muted">Projects Completed</div>
+      </div>
+
+      <!-- Counter Card 2 -->
+      <div class="space-y-2 achievement-counter-card" data-final-count="40">
+        <div class="text-2xl sm:text-4xl font-cyber font-black text-cyber-purple tracking-wide filter drop-shadow-[0_0_8px_rgba(217,70,239,0.15)]">
+          <span class="count-value">0</span>+
+        </div>
+        <div class="text-[10px] font-mono uppercase tracking-[0.2em] text-cyber-muted">GitHub Repositories</div>
+      </div>
+
+      <!-- Counter Card 3 -->
+      <div class="space-y-2 achievement-counter-card" data-final-count="15">
+        <div class="text-2xl sm:text-4xl font-cyber font-black text-cyber-blue tracking-wide filter drop-shadow-[0_0_8px_rgba(0,229,255,0.15)]">
+          <span class="count-value">0</span>+
+        </div>
+        <div class="text-[10px] font-mono uppercase tracking-[0.2em] text-cyber-muted">Technologies Learned</div>
+      </div>
+
+      <!-- Counter Card 4 -->
+      <div class="space-y-2 achievement-counter-card" data-final-count="10">
+        <div class="text-2xl sm:text-4xl font-cyber font-black text-cyber-purple tracking-wide filter drop-shadow-[0_0_8px_rgba(217,70,239,0.15)]">
+          <span class="count-value">0</span>+
+        </div>
+        <div class="text-[10px] font-mono uppercase tracking-[0.2em] text-cyber-muted">Happy Clients</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Projects Section / Immersive Gallery -->
+  <section id="projects" class="py-24 relative px-6 z-10 max-w-7xl mx-auto">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_right_bottom,rgba(0,229,255,0.03),transparent_40%)] pointer-events-none -z-10"></div>
+    
+    <div class="space-y-4 text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-block text-xs font-mono text-cyber-blue uppercase tracking-[0.3em] font-semibold">PROJECT_EMULATOR_CATALOG</div>
+      <h2 class="text-3xl sm:text-4xl font-cyber font-black tracking-widest text-white uppercase">Featured Deployments</h2>
+      <div class="w-24 h-1 bg-gradient-to-r from-cyber-blue to-cyber-purple mx-auto"></div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="flex flex-wrap justify-center gap-4 mb-12 font-cyber text-[10px] tracking-widest uppercase">
+      <button class="project-filter-btn px-6 py-2.5 bg-cyber-blue text-cyber-bg font-bold border border-cyber-blue tracking-widest transition-all duration-300" data-filter="all">
+        ALL_PROJECTS
+      </button>
+      <button class="project-filter-btn px-6 py-2.5 bg-transparent text-cyber-muted font-bold border border-gray-800 tracking-widest hover:border-cyber-blue hover:text-cyber-blue transition-all duration-300" data-filter="frontend">
+        FRONTEND
+      </button>
+      <button class="project-filter-btn px-6 py-2.5 bg-transparent text-cyber-muted font-bold border border-gray-800 tracking-widest hover:border-cyber-blue hover:text-cyber-blue transition-all duration-300" data-filter="backend">
+        BACKEND
+      </button>
+      <button class="project-filter-btn px-6 py-2.5 bg-transparent text-cyber-muted font-bold border border-gray-800 tracking-widest hover:border-cyber-purple hover:text-cyber-purple transition-all duration-300" data-filter="fullstack">
+        FULL_STACK
+      </button>
+    </div>
+
+    <!-- Project Cards Grid -->
+    <div id="project-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      
+      <!-- Project 1 -->
+      <div class="project-card bg-cyber-card border border-cyber-blue/15 rounded-2xl overflow-hidden shadow-glass group hover:border-cyber-blue/40 transition-all duration-300 flex flex-col" data-categories="fullstack,backend">
+        <div class="relative aspect-video w-full overflow-hidden bg-gray-900 border-b border-gray-800">
+          <!-- Geometric vector preview as mock image asset -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-cyber-bg via-gray-900 to-cyber-bg opacity-90"></div>
+          <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-6 space-y-3 z-10">
+            <div class="w-16 h-16 rounded-full bg-cyber-blue/15 border border-cyber-blue/30 flex items-center justify-center text-cyber-blue text-3xl group-hover:scale-110 transition-all duration-300 shadow-neon-blue">
+              <i class="fas fa-utensils"></i>
+            </div>
+            <h4 class="font-cyber font-bold text-white uppercase text-xs tracking-widest">L'Élite Fine Dining</h4>
+            <span class="text-[9px] font-mono text-cyber-muted uppercase tracking-widest bg-black/40 border border-gray-800 px-3 py-1 rounded-full">Node.js Express / Reservations</span>
+          </div>
+        </div>
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-2">
+            <h3 class="font-cyber font-bold text-white text-base uppercase tracking-wider">Luxury Restaurant Website</h3>
+            <p class="text-xs text-cyber-muted leading-relaxed font-light">
+              A premium client fine-dining website featuring sophisticated aesthetic panels, fully synchronized dynamic sliders, and a secure Express reservations verification pipeline.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-blue">Node.js</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-blue">Express</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-blue">HTML/CSS</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-blue">JSON DB</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-800 font-cyber text-[9px] tracking-wider uppercase font-bold">
+            <a href="https://github.com/saurabhbuilds59" target="_blank" class="px-4 py-2 border border-gray-800 text-center text-cyber-muted hover:border-cyber-blue hover:text-cyber-blue transition-colors rounded-lg flex items-center justify-center gap-1.5">
+              <i class="fab fa-github"></i> GITHUB_SRC
+            </a>
+            <a href="https://luxury-reastaurant-website-git-main-saurabhbuilds59s-projects.vercel.app/" target="_blank" rel="noopener" class="px-4 py-2 bg-cyber-blue text-cyber-bg text-center font-black hover:bg-cyber-blueDark transition-all rounded-lg flex items-center justify-center gap-1.5">
+              <i class="fas fa-globe"></i> 1 Luxary reastaurent
+            </a>
+            <button class="live-emulator-trigger-btn px-4 py-2 bg-cyber-blue text-cyber-bg text-center font-black hover:bg-cyber-blueDark transition-all rounded-lg flex items-center justify-center gap-1.5" data-project="restaurant">
+              <i class="fas fa-terminal"></i> LIVE_DEMO
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card bg-cyber-card border border-cyber-purple/15 rounded-2xl overflow-hidden shadow-glass group hover:border-cyber-purple/40 transition-all duration-300 flex flex-col" data-categories="frontend">
+        <div class="relative aspect-video w-full overflow-hidden bg-gray-900 border-b border-gray-800">
+          <div class="absolute inset-0 bg-gradient-to-tr from-cyber-bg via-gray-900 to-cyber-bg opacity-90"></div>
+          <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-6 space-y-3 z-10">
+            <div class="w-16 h-16 rounded-full bg-cyber-purple/15 border border-cyber-purple/30 flex items-center justify-center text-cyber-purple text-3xl group-hover:scale-110 transition-all duration-300 shadow-neon-purple">
+              <i class="fas fa-folder-open"></i>
+            </div>
+            <h4 class="font-cyber font-bold text-white uppercase text-xs tracking-widest">Saurabh Portfolio</h4>
+            <span class="text-[9px] font-mono text-cyber-muted uppercase tracking-widest bg-black/40 border border-gray-800 px-3 py-1 rounded-full">Glassmorphism / Neon 3D</span>
+          </div>
+        </div>
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-2">
+            <h3 class="font-cyber font-bold text-white text-base uppercase tracking-wider">Developer Portfolio</h3>
+            <p class="text-xs text-cyber-muted leading-relaxed font-light">
+              This high-performance portfolio showcasing responsive elements, mouse perspective tilt, real-time dynamic GitHub contributions, and customized terminal emulator interfaces.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-purple">HTML5</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-purple">CSS3</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-purple">JavaScript</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-purple">Tailwind</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-800 font-cyber text-[9px] tracking-wider uppercase font-bold">
+            <a href="https://github.com/saurabhbuilds59" target="_blank" class="px-4 py-2 border border-gray-800 text-center text-cyber-muted hover:border-cyber-purple hover:text-cyber-purple transition-colors rounded-lg flex items-center justify-center gap-1.5">
+              <i class="fab fa-github"></i> GITHUB_SRC
+            </a>
+            <button class="live-emulator-trigger-btn px-4 py-2 bg-cyber-purple text-white text-center font-black hover:bg-cyber-purpleDark transition-all rounded-lg flex items-center justify-center gap-1.5" data-project="portfolio">
+              <i class="fas fa-terminal"></i> LIVE_DEMO
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card bg-cyber-card border border-cyber-blue/15 rounded-2xl overflow-hidden shadow-glass group hover:border-cyber-blue/40 transition-all duration-300 flex flex-col" data-categories="frontend">
+        <div class="relative aspect-video w-full overflow-hidden bg-gray-900 border-b border-gray-800">
+          <div class="absolute inset-0 bg-gradient-to-tr from-cyber-bg via-gray-900 to-cyber-bg opacity-90"></div>
+          <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-6 space-y-3 z-10">
+            <div class="w-16 h-16 rounded-full bg-cyber-blue/15 border border-cyber-blue/30 flex items-center justify-center text-cyber-blue text-3xl group-hover:scale-110 transition-all duration-300 shadow-neon-blue">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h4 class="font-cyber font-bold text-white uppercase text-xs tracking-widest">Aero Corp Solutions</h4>
+            <span class="text-[9px] font-mono text-cyber-muted uppercase tracking-widest bg-black/40 border border-gray-800 px-3 py-1 rounded-full">Interactive UX / Business Branding</span>
+          </div>
+        </div>
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-2">
+            <h3 class="font-cyber font-bold text-white text-base uppercase tracking-wider">Business Landing Page</h3>
+            <p class="text-xs text-cyber-muted leading-relaxed font-light">
+              High-impact corporate web landing grid representing pristine CSS typography layouts, performance-optimized animations, and fluid responsive grid layers.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-blue">Bootstrap</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-blue">Tailwind</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-blue">JavaScript</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-blue">SEO</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-800 font-cyber text-[9px] tracking-wider uppercase font-bold">
+            <a href="https://github.com/saurabhbuilds59" target="_blank" class="px-4 py-2 border border-gray-800 text-center text-cyber-muted hover:border-cyber-blue hover:text-cyber-blue transition-colors rounded-lg flex items-center justify-center gap-1.5">
+              <i class="fab fa-github"></i> GITHUB_SRC
+            </a>
+            <button class="live-emulator-trigger-btn px-4 py-2 bg-cyber-blue text-cyber-bg text-center font-black hover:bg-cyber-blueDark transition-all rounded-lg flex items-center justify-center gap-1.5" data-project="business">
+              <i class="fas fa-terminal"></i> LIVE_DEMO
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="project-card bg-cyber-card border border-cyber-purple/15 rounded-2xl overflow-hidden shadow-glass group hover:border-cyber-purple/40 transition-all duration-300 flex flex-col" data-categories="fullstack,backend">
+        <div class="relative aspect-video w-full overflow-hidden bg-gray-900 border-b border-gray-800">
+          <div class="absolute inset-0 bg-gradient-to-tr from-cyber-bg via-gray-900 to-cyber-bg opacity-90"></div>
+          <div class="absolute inset-0 flex flex-col justify-center items-center text-center p-6 space-y-3 z-10">
+            <div class="w-16 h-16 rounded-full bg-cyber-purple/15 border border-cyber-purple/30 flex items-center justify-center text-cyber-purple text-3xl group-hover:scale-110 transition-all duration-300 shadow-neon-purple">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h4 class="font-cyber font-bold text-white uppercase text-xs tracking-widest">CosmoStore E-Shop</h4>
+            <span class="text-[9px] font-mono text-cyber-muted uppercase tracking-widest bg-black/40 border border-gray-800 px-3 py-1 rounded-full">Reactive Cart / Product filtering</span>
+          </div>
+        </div>
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-2">
+            <h3 class="font-cyber font-bold text-white text-base uppercase tracking-wider">E-Commerce Website</h3>
+            <p class="text-xs text-cyber-muted leading-relaxed font-light">
+              An fully interactive commercial storefront with responsive card matrix, live persistent cart indicators, catalog filter tags, and modular architecture.
+            </p>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-purple">React JS</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-purple">Context API</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-purple">Tailwind</span>
+            <span class="text-[9px] font-mono px-2 py-0.5 bg-gray-900 border border-gray-800 rounded text-cyber-purple">Mock Gateways</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-800 font-cyber text-[9px] tracking-wider uppercase font-bold">
+            <a href="https://github.com/saurabhbuilds59" target="_blank" class="px-4 py-2 border border-gray-800 text-center text-cyber-muted hover:border-cyber-purple hover:text-cyber-purple transition-colors rounded-lg flex items-center justify-center gap-1.5">
+              <i class="fab fa-github"></i> GITHUB_SRC
+            </a>
+            <button class="live-emulator-trigger-btn px-4 py-2 bg-cyber-purple text-white text-center font-black hover:bg-cyber-purpleDark transition-all rounded-lg flex items-center justify-center gap-1.5" data-project="ecommerce">
+              <i class="fas fa-terminal"></i> LIVE_DEMO
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- GitHub Dynamic Integration Section -->
+  <section id="github" class="py-24 relative px-6 z-10 max-w-7xl mx-auto">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_left_bottom,rgba(217,70,239,0.03),transparent_40%)] pointer-events-none -z-10"></div>
+    
+    <div class="space-y-4 text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-block text-xs font-mono text-cyber-purple uppercase tracking-[0.3em] font-semibold">GITHUB_REPOS_INTEGRATION</div>
+      <h2 class="text-3xl sm:text-4xl font-cyber font-black tracking-widest text-white uppercase">Live GitHub Node</h2>
+      <div class="w-24 h-1 bg-gradient-to-r from-cyber-purple to-cyber-blue mx-auto"></div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Left side: Profile Overview Card -->
+      <div class="lg:col-span-4 bg-cyber-card border border-cyber-blue/20 p-6 rounded-2xl shadow-glass flex flex-col items-center text-center space-y-6 relative overflow-hidden group hover:border-cyber-blue/40 transition-all duration-300">
+        <!-- Decoration element -->
+        <div class="absolute top-0 right-0 w-16 h-16 bg-cyber-blue/10 rounded-full blur-xl"></div>
+        
+        <!-- Live Profile Picture -->
+        <div class="relative w-28 h-28 rounded-full p-1 bg-gradient-to-tr from-cyber-blue to-cyber-purple shadow-neon-blue">
+          <img id="gh-profile-pic" src="https://avatars.githubusercontent.com/u/190848325?v=4" alt="Saurabh Sen" class="w-full h-full rounded-full object-cover bg-cyber-darker">
+        </div>
+
+        <div class="space-y-1">
+          <h3 id="gh-profile-name" class="font-cyber font-bold text-white uppercase tracking-wider text-sm">Saurabh Sen</h3>
+          <p id="gh-profile-username" class="font-mono text-xs text-cyber-blue">@saurabhbuilds59</p>
+          <span class="inline-block text-[9px] font-mono uppercase bg-cyber-blue/10 border border-cyber-blue/20 text-cyber-blue px-2.5 py-0.5 rounded-full mt-1">ESTABLISHED_NODE</span>
+        </div>
+
+        <p id="gh-profile-bio" class="text-xs text-cyber-muted font-light leading-relaxed">
+          Full Stack Web Developer & B.Tech AI student building clean products on open source technologies.
+        </p>
+
+        <!-- Stats row -->
+        <div class="w-full grid grid-cols-3 gap-2 py-4 border-y border-gray-800 font-mono text-center">
+          <div>
+            <div id="gh-followers-count" class="text-white font-bold text-sm">4+</div>
+            <div class="text-[9px] text-cyber-muted uppercase">Followers</div>
+          </div>
+          <div>
+            <div id="gh-following-count" class="text-white font-bold text-sm">12+</div>
+            <div class="text-[9px] text-cyber-muted uppercase">Following</div>
+          </div>
+          <div>
+            <div id="gh-repos-count" class="text-white font-bold text-sm">38+</div>
+            <div class="text-[9px] text-cyber-muted uppercase">Repos</div>
+          </div>
+        </div>
+
+        <a id="view-gh-profile-link" href="https://github.com/saurabhbuilds59" target="_blank" class="w-full py-2.5 bg-gradient-to-tr from-cyber-blue/20 to-cyber-purple/20 hover:from-cyber-blue hover:to-cyber-purple border border-cyber-blue/40 hover:text-cyber-bg hover:font-bold font-cyber text-[10px] uppercase tracking-widest text-cyber-blue transition-all duration-300 rounded-lg flex items-center justify-center gap-1.5">
+          <i class="fab fa-github"></i> VIS_PROFILE_NODE
+        </a>
+      </div>
+
+      <!-- Right side: Dynamic Heatmap & Top Repos -->
+      <div class="lg:col-span-8 space-y-8">
+        <!-- Interactive Custom Contribution Grid -->
+        <div class="bg-cyber-card border border-cyber-purple/15 p-6 rounded-2xl shadow-glass space-y-4">
+          <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+            <h4 class="font-cyber font-bold text-white text-xs tracking-wider">CONTRIBUTION_HEATMAP_GRID</h4>
+            <span class="text-[9px] font-mono text-cyber-purple uppercase tracking-widest">Live Heat Graph</span>
+          </div>
+          
+          <div class="overflow-x-auto pb-2 scrollbar-thin">
+            <!-- Custom Contribution heat circles -->
+            <div id="contribution-heatmap" class="grid grid-flow-col grid-rows-7 gap-[3px] min-w-[550px] aspect-[10/1] py-2">
+              <!-- Dynamically populated in script.js to reflect actual styled grid -->
+            </div>
+          </div>
+          
+          <div class="flex justify-between items-center text-[9px] font-mono text-cyber-muted">
+            <span>Less active</span>
+            <div class="flex gap-1">
+              <span class="w-2.5 h-2.5 bg-gray-900 border border-gray-800 rounded"></span>
+              <span class="w-2.5 h-2.5 bg-cyber-purple/30 rounded"></span>
+              <span class="w-2.5 h-2.5 bg-cyber-purple/60 rounded"></span>
+              <span class="w-2.5 h-2.5 bg-cyber-purple rounded animate-pulse"></span>
+            </div>
+            <span>More active</span>
+          </div>
+        </div>
+
+        <!-- Latest Repositories Area -->
+        <div class="space-y-4">
+          <h4 class="font-cyber font-bold text-white text-xs tracking-wider uppercase pl-3 border-l-4 border-cyber-blue">Latest Deployments Cluster</h4>
+          
+          <div id="github-latest-repos-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Dynamically populated loading skeleton, or default fallback repos -->
+            <div class="p-5 bg-cyber-darker/60 border border-gray-800 rounded-xl space-y-4 animate-pulse">
+              <div class="h-4 bg-gray-800 rounded w-2/3"></div>
+              <div class="h-3 bg-gray-800 rounded w-full"></div>
+              <div class="h-3 bg-gray-800 rounded w-1/2"></div>
+            </div>
+            <div class="p-5 bg-cyber-darker/60 border border-gray-800 rounded-xl space-y-4 animate-pulse">
+              <div class="h-4 bg-gray-800 rounded w-2/3"></div>
+              <div class="h-3 bg-gray-800 rounded w-full"></div>
+              <div class="h-3 bg-gray-800 rounded w-1/2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LinkedIn Card Section -->
+  <section id="linkedin" class="py-12 relative px-6 z-10 max-w-7xl mx-auto">
+    <div class="max-w-4xl mx-auto bg-gradient-to-tr from-cyber-blue/10 via-cyber-purple/10 to-transparent border border-cyber-blue/20 p-6 md:p-8 rounded-2xl shadow-glass flex flex-col md:flex-row items-center md:items-stretch gap-8 relative overflow-hidden group hover:border-cyber-blue/40 transition-all duration-300">
+      <!-- Background logo -->
+      <div class="absolute right-0 bottom-0 opacity-5 text-cyber-blue font-black text-9xl transform translate-x-12 translate-y-12 select-none pointer-events-none">
+        <i class="fab fa-linkedin"></i>
+      </div>
+      
+      <!-- Profile Column -->
+      <div class="flex flex-col items-center md:items-start text-center md:text-left space-y-4 shrink-0 md:border-r md:border-gray-800 md:pr-8">
+        <div class="w-24 h-24 rounded-full p-1 bg-gradient-to-r from-blue-500 to-cyber-blue shadow-neon-blue">
+          <img src="https://avatars.githubusercontent.com/u/190848325?v=4" alt="Saurabh Sen" class="w-full h-full rounded-full object-cover bg-cyber-darker">
+        </div>
+        <div>
+          <h3 class="font-cyber font-bold text-white text-sm uppercase tracking-wider">Saurabh Sen</h3>
+          <p class="text-xs text-cyber-blue font-mono">Full Stack Web Developer</p>
+          <p class="text-[10px] text-cyber-muted mt-1 font-mono"><i class="fas fa-map-marker-alt"></i> Jabalpur, MP, India</p>
+        </div>
+        <a href="https://www.linkedin.com/in/saurabh-sen-a257266376/" target="_blank" class="px-6 py-2 bg-[#0077B5] hover:bg-[#006296] text-white font-cyber text-[9px] tracking-widest uppercase font-bold rounded-lg shadow-lg active:scale-95 transition-all flex items-center gap-1.5">
+          <i class="fab fa-linkedin-in"></i> LINKEDIN_PROFILE
+        </a>
+      </div>
+
+      <!-- Experience & Endorse Mini-Game Column -->
+      <div class="flex-1 flex flex-col justify-between space-y-6">
+        <div class="space-y-2">
+          <span class="text-[9px] font-mono text-cyber-purple uppercase tracking-widest font-bold">PROFESSIONAL_SUMMARY</span>
+          <h4 class="text-sm font-cyber text-white font-bold tracking-wider uppercase">Connect with me on LinkedIn</h4>
+          <p class="text-xs text-cyber-muted leading-relaxed font-light">
+            I post articles and write-ups regarding current AI modules, full-stack microservices, software construction protocols, and responsive web framework optimization tricks.
+          </p>
+        </div>
+
+        <!-- Endorsement Interactive Game Area -->
+        <div class="p-4 bg-cyber-bg/70 border border-gray-800 rounded-xl space-y-3">
+          <div class="flex justify-between items-center text-[10px] font-mono">
+            <span class="text-cyber-blue uppercase font-bold">Endorse Saurabh's Core Skills:</span>
+            <span id="endorse-multiplier" class="text-cyber-purple font-black">STREAK: 1X</span>
+          </div>
+          <div class="flex flex-wrap gap-2 text-[9px] font-mono">
+            <button class="endorse-tag px-3 py-1.5 bg-gray-900 border border-gray-800 hover:border-cyber-blue hover:text-cyber-blue rounded-lg transition-all flex items-center gap-1.5" data-skill="React">
+              ReactJS <span class="badge text-cyber-blue font-bold">+18</span>
+            </button>
+            <button class="endorse-tag px-3 py-1.5 bg-gray-900 border border-gray-800 hover:border-cyber-purple hover:text-cyber-purple rounded-lg transition-all flex items-center gap-1.5" data-skill="Node">
+              NodeJS <span class="badge text-cyber-purple font-bold">+15</span>
+            </button>
+            <button class="endorse-tag px-3 py-1.5 bg-gray-900 border border-gray-800 hover:border-cyber-blue hover:text-cyber-blue rounded-lg transition-all flex items-center gap-1.5" data-skill="AI">
+              AI & Data Science <span class="badge text-cyber-blue font-bold">+24</span>
+            </button>
+            <button class="endorse-tag px-3 py-1.5 bg-gray-900 border border-gray-800 hover:border-cyber-purple hover:text-cyber-purple rounded-lg transition-all flex items-center gap-1.5" data-skill="Python">
+              Python <span class="badge text-cyber-purple font-bold">+12</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 relative px-6 z-10 max-w-7xl mx-auto">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_left_bottom,rgba(0,229,255,0.03),transparent_40%)] pointer-events-none -z-10"></div>
+    
+    <div class="space-y-4 text-center max-w-3xl mx-auto mb-16">
+      <div class="inline-block text-xs font-mono text-cyber-blue uppercase tracking-[0.3em] font-semibold">CONTACT_COMM_PORTAL</div>
+      <h2 class="text-3xl sm:text-4xl font-cyber font-black tracking-widest text-white uppercase">Initialize Contact</h2>
+      <div class="w-24 h-1 bg-gradient-to-r from-cyber-blue to-cyber-purple mx-auto"></div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <!-- Left Contact Details Column -->
+      <div class="lg:col-span-5 space-y-8">
+        <div class="space-y-4">
+          <h4 class="font-cyber font-bold text-white text-sm uppercase tracking-wider">Gateway Coordinates</h4>
+          <p class="text-xs sm:text-sm text-cyber-muted leading-relaxed font-light">
+            Have a project concept, research proposal, or deployment gig? Get in touch immediately via the direct parameters below or the messaging uplink on the right!
+          </p>
+        </div>
+
+        <div class="space-y-4 font-mono text-xs text-cyber-lightText">
+          <!-- Item 1: Phone -->
+          <div class="p-4 bg-cyber-card border border-gray-800/80 rounded-xl flex items-center gap-4 hover:border-cyber-blue/30 transition-all duration-300">
+            <div class="w-10 h-10 rounded-lg bg-cyber-blue/10 flex items-center justify-center text-cyber-blue text-lg">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-cyber-muted uppercase tracking-widest">Phone (Uplink)</div>
+              <a href="tel:+919301477386" class="text-white hover:text-cyber-blue font-bold transition-colors">+91 9301477386</a>
+            </div>
+          </div>
+
+          <!-- Item 2: Email -->
+          <div class="p-4 bg-cyber-card border border-gray-800/80 rounded-xl flex items-center gap-4 hover:border-cyber-purple/30 transition-all duration-300">
+            <div class="w-10 h-10 rounded-lg bg-cyber-purple/10 flex items-center justify-center text-cyber-purple text-lg">
+              <i class="far fa-envelope"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-cyber-muted uppercase tracking-widest">Email (Param)</div>
+              <a href="mailto:saurabhsen937@gmail.com" class="text-white hover:text-cyber-purple font-bold transition-colors">saurabhsen937@gmail.com</a>
+            </div>
+          </div>
+
+          <!-- Item 3: Location -->
+          <div class="p-4 bg-cyber-card border border-gray-800/80 rounded-xl flex items-center gap-4 hover:border-cyber-blue/30 transition-all duration-300">
+            <div class="w-10 h-10 rounded-lg bg-cyber-blue/10 flex items-center justify-center text-cyber-blue text-lg">
+              <i class="fas fa-satellite"></i>
+            </div>
+            <div>
+              <div class="text-[10px] text-cyber-muted uppercase tracking-widest">Base Coordinates</div>
+              <span class="text-white font-bold">Jabalpur, Madhya Pradesh, India</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social links row -->
+        <div class="flex flex-wrap gap-3">
+          <a href="https://github.com/saurabhbuilds59" target="_blank" class="w-10 h-10 rounded-lg border border-gray-800 flex items-center justify-center text-cyber-muted hover:border-cyber-blue hover:text-cyber-blue hover:shadow-neon-blue hover:scale-110 active:scale-95 transition-all duration-300" title="GitHub"><i class="fab fa-github text-lg"></i></a>
+          <a href="https://www.linkedin.com/in/saurabh-sen-a257266376/" target="_blank" class="w-10 h-10 rounded-lg border border-gray-800 flex items-center justify-center text-cyber-muted hover:border-cyber-blue hover:text-cyber-blue hover:shadow-neon-blue hover:scale-110 active:scale-95 transition-all duration-300" title="LinkedIn"><i class="fab fa-linkedin-in text-lg"></i></a>
+          <a href="https://instagram.com/_saurabhsen" target="_blank" class="w-10 h-10 rounded-lg border border-gray-800 flex items-center justify-center text-cyber-muted hover:border-cyber-purple hover:text-cyber-purple hover:shadow-neon-purple hover:scale-110 active:scale-95 transition-all duration-300" title="Instagram"><i class="fab fa-instagram text-lg"></i></a>
+          <a href="https://twitter.com" target="_blank" class="w-10 h-10 rounded-lg border border-gray-800 flex items-center justify-center text-cyber-muted hover:border-cyber-blue hover:text-cyber-blue hover:shadow-neon-blue hover:scale-110 active:scale-95 transition-all duration-300" title="Twitter"><i class="fab fa-twitter text-lg"></i></a>
+          <a href="https://discord.com" target="_blank" class="w-10 h-10 rounded-lg border border-gray-800 flex items-center justify-center text-cyber-muted hover:border-cyber-purple hover:text-cyber-purple hover:shadow-neon-purple hover:scale-110 active:scale-95 transition-all duration-300" title="Discord"><i class="fab fa-discord text-lg"></i></a>
+        </div>
+      </div>
+
+      <!-- Right Form Column -->
+      <div class="lg:col-span-7">
+        <form id="portfolio-contact-form" class="bg-cyber-card border border-cyber-blue/20 p-6 sm:p-8 rounded-2xl shadow-glass space-y-6 relative overflow-hidden group hover:border-cyber-blue/40 transition-all duration-300">
+          <h3 class="font-cyber font-bold text-white text-sm uppercase tracking-wider mb-2">Secure Message Uplink</h3>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Name Input -->
+            <div class="flex flex-col gap-1.5">
+              <label for="contact-name" class="text-[9px] uppercase font-mono tracking-widest text-cyber-muted font-bold">NAME_PARAM</label>
+              <input type="text" id="contact-name" name="name" value="saurabh sen" required class="bg-transparent border-b border-gray-800 text-sm py-2 px-1 text-white focus:outline-none focus:border-cyber-blue focus:shadow-none font-sans tracking-wide transition-colors">
+            </div>
+            
+            <!-- Email Input -->
+            <div class="flex flex-col gap-1.5">
+              <label for="contact-email" class="text-[9px] uppercase font-mono tracking-widest text-cyber-muted font-bold">EMAIL_UPLINK</label>
+              <input type="email" id="contact-email" name="email" value="saurabhsen937@gmail.com" required class="bg-transparent border-b border-gray-800 text-sm py-2 px-1 text-white focus:outline-none focus:border-cyber-blue focus:shadow-none font-sans tracking-wide transition-colors">
+            </div>
+          </div>
+
+          <!-- Subject Input -->
+          <div class="flex flex-col gap-1.5">
+            <label for="contact-subject" class="text-[9px] uppercase font-mono tracking-widest text-cyber-muted font-bold">SUBJECT_PARAM</label>
+            <input type="text" id="contact-subject" name="subject" value="Developer" required class="bg-transparent border-b border-gray-800 text-sm py-2 px-1 text-white focus:outline-none focus:border-cyber-blue focus:shadow-none font-sans tracking-wide transition-colors">
+          </div>
+
+          <!-- Message Input -->
+          <div class="flex flex-col gap-1.5">
+            <label for="contact-message" class="text-[9px] uppercase font-mono tracking-widest text-cyber-muted font-bold">MESSAGE_PAYLOAD</label>
+            <textarea id="contact-message" name="message" rows="4" placeholder="Enter message text parameters..." required class="bg-transparent border-b border-gray-800 text-sm py-2 px-1 text-white focus:outline-none focus:border-cyber-blue focus:shadow-none font-sans tracking-wide resize-none transition-colors"></textarea>
+          </div>
+
+          <!-- Dynamic success/error report toasts inside form container -->
+          <div id="form-notification-area" class="hidden text-xs font-mono p-3 rounded-lg border"></div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="contact-form-submit-btn" class="w-full mt-6 text-[10px] font-cyber tracking-[0.3em] uppercase text-cyber-blue border border-cyber-blue py-3.5 hover:bg-cyber-blue hover:text-cyber-bg font-bold transition-all hover:shadow-neon-blue active:scale-95 duration-300">
+            TRANSMIT_PAYLOAD
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="border-t border-gray-900/90 py-12 bg-cyber-darker relative z-10 px-6">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 font-mono text-[10px] text-cyber-muted">
+      
+      <!-- Left Copy Info -->
+      <div class="text-center md:text-left space-y-1">
+        <div>© 2026 Saurabh Sen — Cybernetic Developer Space</div>
+        <div class="text-[8px] tracking-widest uppercase">MADE WITH <span class="text-cyber-purple">❤️</span> & CYBER_TECH STACK</div>
+      </div>
+
+      <!-- Right interactive node back-to-top -->
+      <button id="footer-back-to-top" class="px-5 py-2.5 bg-gray-900 hover:bg-cyber-blue/15 border border-gray-800 hover:border-cyber-blue text-cyber-muted hover:text-cyber-blue tracking-[0.2em] uppercase rounded-full transition-all duration-300 flex items-center gap-2 text-[9px] group font-bold">
+        BACK_TO_TOP_NODE <i class="fas fa-arrow-up group-hover:-translate-y-1 transition-transform duration-300"></i>
+      </button>
+
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
