@@ -750,15 +750,15 @@ document.addEventListener("DOMContentLoaded", () => {
       injectRestaurantSimulator();
     } else if (projectName === "portfolio") {
       emulatorTitle.innerText = "CYBER_SHELL_EMULATOR_v2.0";
-      emulatorUrl.innerText = "https://saurabhsen.dev/projects/terminal-portfolio";
+      emulatorUrl.innerText = "https://saurabh-portfolio-v2.vercel.app/";
       injectPortfolioTerminal();
     } else if (projectName === "business") {
       emulatorTitle.innerText = "AERO_CORP_DASHBOARD_SIM";
-      emulatorUrl.innerText = "https://saurabhsen.dev/projects/business-solutions";
+      emulatorUrl.innerText = "https://buisness-landing-page-rho.vercel.app/";
       injectBusinessSimulator();
     } else if (projectName === "ecommerce") {
       emulatorTitle.innerText = "COSMO_SHOP_CHECKOUT_GATEWAY";
-      emulatorUrl.innerText = "https://saurabhsen.dev/projects/cosmo-ecommerce";
+      emulatorUrl.innerText = "https://e-commerce-website-iz5u.vercel.app/";
       injectEcommerceSimulator();
     }
   }
